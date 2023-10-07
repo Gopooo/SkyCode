@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversion HTML</title>
+    <style>
+        /* Ajoutez vos styles CSS ici */
+    </style>
+</head>
+<body>
+    <h1>Interface Visuelle</h1>
+    <img src="BORNE8.png" alt="Image">
+
+    <label for="nom">Entrez le nom :</label>
+    <input type="text" id="nom" placeholder="Nom">
+    <button onclick="afficherIdVariant()">Afficher ID et Variant</button>
+    <button onclick="copierResultat()">Copier le Résultat</button>
+    <p id="resultat"></p>
+
+    <script>
+        function afficherIdVariant() {
+            var nomRecherche = document.getElementById("nom").value;
+
+            // Charger les données à partir du fichier JSON
+            fetch(data.json)
+                .then(response => response.json())
+                .then(data => {
+                    var trouve = false;
+                    var resultat = "";
+
+                    for (var i = 0; i < data.length; i++) {
+                        if (data[i].Name === nomRecherche) {
+                            var idHex = data[i].Id.toString(16).toUpperCase().padStart(3, "0");
+                            var variantHex = data[i].Variant.toString(16).toUpperCase().padStart(4, "0");
+                            resultat = "T0" + idHex + variantHex;
+                            trouve = true;
+                            break;
+                        }
+                    }
+
+                    if (trouve) {
+                        document.getElementById("resultat").textContent = resultat;
+                    } else {
+                        document.getElementById("resultat").textContent = "Nom non trouvé dans les données.";
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur lors du chargement des données :', error);
+                });
+        }
+
+        function copierResultat() {
+            var resultat = document.getElementById("resultat").textContent;
+            if (resultat) {
+                navigator.clipboard.writeText(resultat);
+                alert("Le résultat a été copié dans le presse-papiers.");
+            }
+        }
+    </script>
+</body>
+</html>
